@@ -1005,7 +1005,7 @@ function Home() {
             </div>
           </div>
           <div className="footer__bottom">
-            <span>© 2026 Dukan. All rights reserved.</span>
+            <span>© 2026 Dukania. All rights reserved.</span>
             <div className="flex gap-3">
               <a href="#" aria-label="Facebook">
                 {/* <Facebook size={16} /> */}

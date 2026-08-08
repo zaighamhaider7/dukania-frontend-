@@ -15,7 +15,18 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+import { useNavigate } from 'react-router-dom';
+
+
 function Sidebar() {
+
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("jwttoken");
+    localStorage.removeItem("user");
+
+    navigate("/login");
+  }
   // controls the thin/wide desktop sidebar
   const [collapsed, setCollapsed] = useState(false);
 
@@ -42,9 +53,8 @@ function Sidebar() {
       )}
 
       <aside
-        className={`sidebar ${collapsed ? "sidebar--collapsed" : ""} ${
-          mobileOpen ? "sidebar--mobile-open" : ""
-        }`}
+        className={`sidebar ${collapsed ? "sidebar--collapsed" : ""} ${mobileOpen ? "sidebar--mobile-open" : ""
+          }`}
       >
         <div className="sidebar-top">
           <a href="/" className="sidebar-logo">
@@ -114,7 +124,7 @@ function Sidebar() {
         </nav>
 
         <div className="sidebar-bottom">
-          <button className="sidebar-link sidebar-link--logout">
+          <button onClick={logout} className="sidebar-link sidebar-link--logout">
             <LogOut size={18} />
             {!collapsed && <span>Logout</span>}
           </button>
