@@ -6,26 +6,36 @@ function Topbar() {
   // opens/closes the profile dropdown menu
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+
+
   return (
     <header className="topbar">
       <div className="topbar-left">
         {/* <h1 className="topbar-title">Dashboard</h1>
-        <p className="topbar-welcome">Welcome back, Ahmed 👋</p> */}
+        <p className="topbar-welcome">Welcome back, Zaigham</p> */}
       </div>
 
       <div className="topbar-right">
-        {/* <div className="topbar-left">
-          <h1 className="topbar-title">Dashboard</h1>
-          <p className="topbar-welcome">Welcome back, Ahmed 👋</p>
-        </div> */}
+
         <div className="topbar-profile">
           <button
             className="topbar-profile-btn"
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
-            <span className="topbar-avatar">A</span>
+            <span className="topbar-avatar">
+              {currentUser?.logo ? (
+                <img
+                  src={currentUser.logo}
+                  alt={currentUser.storeName}
+                  className="topbar-avatar__img"
+                />
+              ) : (
+                currentUser?.storeName?.charAt(0).toUpperCase()
+              )}
+            </span>
             <span className="topbar-user-info">
-              <span className="topbar-username">Ahmed Raza</span>
+              <span className="topbar-username">{currentUser?.storeName}</span>
               <span className="topbar-userrole">Store Owner</span>
             </span>
             <ChevronDown

@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import CreateStore from './pages/CreateStore';
 import ProtectedRoute from './components/ProtectedRoute';
 import Store from './pages/Store';
+import Notfound from './components/Notfound';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route index element={<Home />}></Route>
           <Route path='/register' element={<Register />}></Route>
+          <Route path='/404' element={<Notfound />}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/store/:storeUsername' element={<Store />}></Route>
 

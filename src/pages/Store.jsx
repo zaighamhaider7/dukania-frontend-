@@ -9,7 +9,7 @@ import {
   Eye,
   ArrowRight,
 } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 
 // ---------------------------------------------------------------------
@@ -33,9 +33,15 @@ const PRODUCTS = [
 
 function Store() {
 
+  const navigate = useNavigate();
+
   const { storeUsername } = useParams();
 
   const [store, setStore] = useState(null);
+
+  const [notFound, setNotFound] = useState(false);
+
+
 
   useEffect(() => {
     const getStore = async () => {
@@ -48,13 +54,18 @@ function Store() {
         setStore(response.data.store);
 
       } catch (error) {
-        console.log(error);
+        if (error.response?.status === 404) {
+          setNotFound(true);
+        }
       }
     };
 
     getStore();
   }, [storeUsername]);
 
+  if (notFound) {
+    navigate("/404");
+  }
 
   // search text typed into the search box
   const [searchTerm, setSearchTerm] = useState("");
