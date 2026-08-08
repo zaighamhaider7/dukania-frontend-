@@ -32,7 +32,6 @@ const PRODUCTS = [
 ];
 
 function Store() {
-  console.log("STORE COMPONENT LOADED");
 
   const { storeUsername } = useParams();
 
@@ -41,7 +40,6 @@ function Store() {
   useEffect(() => {
     const getStore = async () => {
       try {
-              console.log("Username:", storeUsername);
 
         const response = await axios.get(
           `${import.meta.env.VITE_API_URL}/store/${storeUsername}`
@@ -265,7 +263,7 @@ function Store() {
 
         <div className="store-footer__bottom">
           <span>© 2026 {store?.storeName}. All rights reserved.</span>
-          <span>Powered by Dukan</span>
+          <span>Powered by Dukania</span>
         </div>
       </footer>
     </div>
