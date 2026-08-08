@@ -1,0 +1,495 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#FAF8F4;
+  --surface:#FFFFFF;
+  --surface-tint:#F1ECE3;
+  --ink:#1E1C1A;
+  --ink-soft:#716B63;
+  --line:#E6E1D8;
+  --accent:#A9814F;
+  --accent-dark:#8C6B3F;
+  --whatsapp:#25D366;
+  --shadow: 0 1px 2px rgba(30,28,26,.04), 0 14px 28px -16px rgba(30,28,26,.14);
+}
+
+*{ box-sizing:border-box; }
+
+.store-page{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+}
+
+/* ===================== shared buttons ===================== */
+.btn-dark{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:.85rem;
+  letter-spacing:.02em;
+  padding:13px 26px;
+  border-radius:6px;
+  background:var(--ink);
+  color:var(--bg);
+  border:1px solid var(--ink);
+  cursor:pointer;
+  transition:background .18s ease, transform .18s ease;
+  text-decoration:none;
+}
+.btn-dark:hover{
+  background:#000;
+  transform:translateY(-1px);
+}
+
+/* ===================== HEADER ===================== */
+.store-header{
+  position:sticky;
+  top:0;
+  z-index:40;
+  background:rgba(250,248,244,.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+
+.store-header__inner{
+  max-width:1180px;
+  margin:0 auto;
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.store-header__brand{ display:flex; align-items:center; gap:10px; min-width:0; }
+
+.store-header__logo{
+  width:34px;
+  height:34px;
+  border-radius:8px;
+  background:var(--ink);
+  color:var(--bg);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.store-header__name{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:1.2rem;
+  color:var(--ink);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.store-header__actions{ display:flex; align-items:center; gap:16px; flex-shrink:0; }
+
+.store-header__divider{
+  width:1px;
+  height:26px;
+  background:var(--line);
+}
+
+/* ---------- cart button: unique ecommerce-style icon with badge ---------- */
+.cart-button{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--ink);
+  cursor:pointer;
+  transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.cart-button:hover{
+  border-color:var(--ink);
+  transform:translateY(-1px);
+  box-shadow:var(--shadow);
+}
+
+.cart-button__count{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  min-width:19px;
+  height:19px;
+  padding:0 4px;
+  border-radius:999px;
+  background:var(--accent);
+  color:#fff;
+  font-size:.65rem;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:2px solid var(--bg);
+}
+
+/* ---------- WhatsApp CTA: quiet outline pill, green only on the icon ---------- */
+.whatsapp-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 18px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:.83rem;
+  text-decoration:none;
+  transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+  white-space:nowrap;
+}
+.whatsapp-pill:hover{
+  border-color:var(--ink);
+  transform:translateY(-1px);
+  box-shadow:var(--shadow);
+}
+.whatsapp-pill__icon{ color:var(--whatsapp); flex-shrink:0; }
+
+/* ===================== HERO ===================== */
+.store-hero{
+  background:var(--surface-tint);
+  border-bottom:1px solid var(--line);
+  padding:64px 24px;
+}
+
+.store-hero__inner{
+  max-width:640px;
+  margin:0 auto;
+  text-align:center;
+}
+
+.store-hero__eyebrow{
+  font-family:'Inter',sans-serif;
+  font-size:.75rem;
+  font-weight:600;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--accent-dark);
+  margin-bottom:10px;
+}
+
+.store-hero__title{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:clamp(2rem, 4.4vw, 3rem);
+  color:var(--ink);
+  line-height:1.15;
+}
+
+.store-hero__desc{
+  font-family:'Inter',sans-serif;
+  font-size:1rem;
+  color:var(--ink-soft);
+  line-height:1.65;
+  margin-top:16px;
+}
+
+.store-hero__cta{ margin-top:30px; }
+
+/* ===================== PRODUCTS ===================== */
+.store-products{ padding:56px 24px 72px; }
+
+.store-products__inner{ max-width:1180px; margin:0 auto; }
+
+/* ---------- sidebar + grid layout ---------- */
+.store-products__layout{
+  display:flex;
+  flex-direction:column;
+  gap:36px;
+}
+
+@media (min-width:900px){
+  .store-products__layout{
+    flex-direction:row;
+    align-items:flex-start;
+    gap:48px;
+  }
+}
+
+/* ---------- filter sidebar ---------- */
+.store-filters{
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+  width:100%;
+}
+
+@media (min-width:900px){
+  .store-filters{
+    width:220px;
+    flex-shrink:0;
+    position:sticky;
+    top:96px;
+  }
+}
+
+.store-filters__group{ display:flex; flex-direction:column; gap:12px; }
+
+.store-filters__heading{
+  font-family:'Inter',sans-serif;
+  font-size:.8rem;
+  font-weight:700;
+  color:var(--ink);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.filter-radio{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Inter',sans-serif;
+  font-size:.86rem;
+  color:var(--ink-soft);
+  cursor:pointer;
+  user-select:none;
+}
+
+.filter-radio input{
+  position:absolute;
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.filter-radio__mark{
+  width:16px;
+  height:16px;
+  border-radius:999px;
+  border:1.5px solid var(--line);
+  background:var(--surface);
+  flex-shrink:0;
+  position:relative;
+  transition:border-color .15s ease;
+}
+
+.filter-radio input:checked + .filter-radio__mark{
+  border-color:var(--ink);
+}
+
+.filter-radio input:checked + .filter-radio__mark::after{
+  content:'';
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  background:var(--ink);
+  transform:translate(-50%, -50%);
+}
+
+.filter-radio:hover .filter-radio__mark{ border-color:var(--ink); }
+
+/* ---------- search (reused inside the sidebar) ---------- */
+.store-search{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.store-search__icon{ position:absolute; left:14px; color:var(--ink-soft); }
+.store-search__input{
+  width:100%;
+  padding:11px 14px 11px 40px;
+  border:1px solid var(--line);
+  border-radius:6px;
+  background:var(--surface);
+  font-family:'Inter',sans-serif;
+  font-size:.86rem;
+  color:var(--ink);
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.store-search__input:focus{
+  outline:none;
+  border-color:var(--ink);
+  box-shadow:0 0 0 3px rgba(30,28,26,.08);
+}
+.store-search__input::placeholder{ color:#A39C92; }
+
+/* ---------- main column ---------- */
+.store-products__main{ flex:1; min-width:0; }
+
+.store-products__count{
+  font-size:.85rem;
+  color:var(--ink-soft);
+  padding-bottom:20px;
+  margin-bottom:28px;
+  border-bottom:1px solid var(--line);
+}
+
+/* ---------- product grid ---------- */
+.store-products__grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:36px 24px;
+}
+
+@media (min-width:560px){
+  .store-products__grid{ grid-template-columns:repeat(2, 1fr); }
+}
+
+@media (min-width:1180px){
+  .store-products__grid{ grid-template-columns:repeat(4, 1fr); gap:40px 24px; }
+}
+
+.store-products__empty{
+  text-align:center;
+  color:var(--ink-soft);
+  font-size:.9rem;
+  padding:48px 0;
+}
+
+/* ---------- product card: large image, minimal chrome ---------- */
+.product-card{
+  display:flex;
+  flex-direction:column;
+}
+
+.product-card__image-wrap{
+  position:relative;
+  width:100%;
+  aspect-ratio:4 / 5;
+  overflow:hidden;
+  background:var(--surface-tint);
+  border-radius:8px;
+}
+
+.product-card__image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .5s ease;
+}
+
+.product-card:hover .product-card__image{
+  transform:scale(1.04);
+}
+
+.product-card__quick-add{
+  position:absolute;
+  bottom:12px;
+  right:12px;
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  border:none;
+  background:var(--surface);
+  color:var(--ink);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  box-shadow:var(--shadow);
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity .2s ease, transform .2s ease, background .2s ease, color .2s ease;
+}
+
+.product-card:hover .product-card__quick-add{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.product-card__quick-add:hover{
+  background:var(--ink);
+  color:var(--bg);
+}
+
+/* always show the quick-add button on touch devices, since :hover won't fire */
+@media (hover:none){
+  .product-card__quick-add{ opacity:1; transform:translateY(0); }
+}
+
+.product-card__body{
+  padding-top:14px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.product-card__name{
+  font-family:'Inter',sans-serif;
+  font-size:.92rem;
+  font-weight:600;
+  color:var(--ink);
+  text-decoration:none;
+  width:fit-content;
+}
+.product-card__name:hover{ text-decoration:underline; }
+
+.product-card__price{
+  font-family:'Inter',sans-serif;
+  font-size:.88rem;
+  color:var(--ink-soft);
+}
+
+
+/* ===================== FOOTER ===================== */
+.store-footer{
+  background:var(--surface-tint);
+  border-top:1px solid var(--line);
+  padding:36px 24px 22px;
+}
+
+.store-footer__inner{
+  max-width:1180px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+
+.store-footer__brand{ display:flex; align-items:center; gap:12px; }
+
+.store-footer__name{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:1.05rem;
+  color:var(--ink);
+}
+
+.store-footer__desc{
+  font-family:'Inter',sans-serif;
+  font-size:.82rem;
+  color:var(--ink-soft);
+  margin-top:2px;
+}
+
+.store-footer__bottom{
+  max-width:1180px;
+  margin:24px auto 0;
+  padding-top:16px;
+  border-top:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  font-family:'Inter',sans-serif;
+  font-size:.78rem;
+  color:var(--ink-soft);
+}
+
+/* ===================== responsive tweaks ===================== */
+@media (max-width:480px){
+  .whatsapp-pill span{ display:none; }
+  .whatsapp-pill{ padding:10px; }
+}

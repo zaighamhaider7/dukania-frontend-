@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root{
+  --primary:#25D366;
+  --primary-dark:#128C7E;
+  --ink:#1F2937;
+  --ink-soft:#5B6472;
+  --paper:#F9FAFB;
+  --white:#FFFFFF;
+  --badge:#F15C4F;
+  --line:#E7EAEE;
+  --shadow: 0 1px 2px rgba(16,24,32,.04), 0 12px 28px -12px rgba(16,24,32,.12);
+}
+
+.dashboard-layout{
+  display:flex;
+  min-height:100vh;
+  background:var(--paper);
+  font-family:'Inter',sans-serif;
+  color:var(--ink);
+}
+
+/* leaves room for the fixed Sidebar (260px expanded width) */
+.dashboard-main{
+  flex:1;
+  margin-left:0;
+  min-width:0;
+}
+
+@media (min-width:1024px){
+  .dashboard-main{ margin-left:260px; }
+}
+
+.dashboard-content{
+  padding:28px 24px 60px;
+  display:flex;
+  flex-direction:column;
+  gap:32px;
+}
+
+/* ---------- shared button (same as Home/Login/Register) ---------- */
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:600; font-size:.95rem; padding:13px 22px; border-radius:12px; transition:transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease; white-space:nowrap; border:none; cursor:pointer; }
+.btn--outline{ background:var(--white); color:var(--ink); border:1.5px solid var(--line); }
+.btn--outline:hover{ border-color:var(--primary-dark); color:var(--primary-dark); }
+.btn--sm{ padding:9px 16px; font-size:.82rem; }
+
+/* ---------- welcome section ---------- */
+.dashboard-welcome__title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(1.6rem, 3vw, 2.2rem);
+  font-weight:800;
+  letter-spacing:-0.02em;
+  color:var(--ink);
+}
+.dashboard-welcome__sub{
+  font-size:.95rem;
+  color:var(--ink-soft);
+  margin-top:6px;
+}
+
+/* ---------- overview / stat cards ---------- */
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(1, 1fr);
+  gap:18px;
+}
+
+@media (min-width:640px){
+  .stat-grid{ grid-template-columns:repeat(2, 1fr); }
+}
+
+@media (min-width:1200px){
+  .stat-grid{ grid-template-columns:repeat(4, 1fr); }
+}
+
+.stat-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:var(--shadow);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.stat-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--primary);
+  box-shadow:0 20px 34px -16px rgba(37,211,102,.28);
+}
+
+.stat-card__icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  background:rgba(37,211,102,.12);
+  color:var(--primary-dark);
+  flex-shrink:0;
+}
+
+.stat-card__value{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:1.5rem;
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.2;
+}
+
+.stat-card__label{
+  font-size:.82rem;
+  color:var(--ink-soft);
+  margin-top:2px;
+}
+
+/* ---------- section wrapper used by Quick Actions + tables ---------- */
+.section-block{ display:flex; flex-direction:column; gap:16px; }
+
+.section-block__head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.section-block__title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:1.15rem;
+  font-weight:700;
+  color:var(--ink);
+}
+
+/* ---------- quick actions ---------- */
+.quick-actions{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+
+@media (min-width:768px){
+  .quick-actions{ grid-template-columns:repeat(3, 1fr); }
+}
+
+.quick-action-card{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px;
+  text-align:left;
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.quick-action-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--primary);
+  box-shadow:var(--shadow);
+}
+
+.quick-action-card__icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:var(--primary);
+  color:#08321D;
+  flex-shrink:0;
+}
+
+.quick-action-card__title{
+  font-size:.95rem;
+  font-weight:700;
+  color:var(--ink);
+}
+
+.quick-action-card__body{
+  font-size:.82rem;
+  color:var(--ink-soft);
+  margin-top:3px;
+  line-height:1.5;
+}
+
+/* ---------- tables ---------- */
+.table-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  overflow-x:auto;
+}
+
+.data-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:560px;
+}
+
+.data-table th{
+  text-align:left;
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  color:var(--ink-soft);
+  font-weight:700;
+  padding:14px 20px;
+  border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+
+.data-table td{
+  padding:14px 20px;
+  font-size:.88rem;
+  color:var(--ink);
+  border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+
+.data-table tbody tr:last-child td{ border-bottom:none; }
+
+.data-table tbody tr{ transition:background .15s ease; }
+.data-table tbody tr:hover{ background:var(--paper); }
+
+/* ---------- status badges (orders table) ---------- */
+.status-badge{
+  display:inline-block;
+  font-size:.72rem;
+  font-weight:700;
+  padding:4px 12px;
+  border-radius:999px;
+}
+.status-badge--new{ background:rgba(241,92,79,.12); color:var(--badge); }
+.status-badge--confirmed{ background:rgba(37,211,102,.14); color:var(--primary-dark); }
+.status-badge--delivered{ background:var(--line); color:var(--ink-soft); }
+
+/* ---------- stock badges (products table) ---------- */
+.stock-badge{
+  display:inline-block;
+  font-size:.72rem;
+  font-weight:700;
+  padding:4px 12px;
+  border-radius:999px;
+}
+.stock-badge--good{ background:rgba(37,211,102,.14); color:var(--primary-dark); }
+.stock-badge--low{ background:rgba(241,92,79,.12); color:var(--badge); }
+.stock-badge--out{ background:var(--line); color:var(--ink-soft); }
+
+
+/* ================= CREATE STORE MESSAGE ================= */
+
+.create-store-message{
+  display:flex;
+  justify-content:left;
+  align-items:left;
+  min-height:70vh;
+}
+
+.create-store-card{
+  max-width:600px;
+  width:100%;
+  background:var(--white);
+  border:1px solid var(--line);
+  /* border-radius:20px; */
+  padding:50px 35px;
+  text-align:center;
+  /* box-shadow:var(--shadow); */
+}
+
+.create-store-icon{
+  width:80px;
+  height:80px;
+  margin:0 auto 24px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  background:rgba(37,211,102,.12);
+}
+
+.create-store-card h1{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:2rem;
+  font-weight:800;
+  color:var(--ink);
+  margin-bottom:12px;
+}
+
+.create-store-card p{
+  color:var(--ink-soft);
+  line-height:1.7;
+  font-size:1rem;
+  max-width:460px;
+  margin:0 auto 30px;
+}
+
+.btn--primary{
+  background:var(--primary);
+  color:#fff;
+}
+
+.btn--primary:hover{
+  background:var(--primary-dark);
+}

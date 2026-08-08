@@ -1,17 +1,17 @@
-import "./Register.css";
+import "./Login.css";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
+import { MessageCircle, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 
+function Login2() {
 
-import { MessageCircle, User, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+  const navigate = useNavigate();
 
-function Register2() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: ""
   })
@@ -19,18 +19,11 @@ function Register2() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     let newErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    } else if (formData.name.trim().length < 3) {
-      newErrors.name = "Name must be at least 3 characters";
-    }
 
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
@@ -44,14 +37,6 @@ function Register2() {
 
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else {
-      const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-      if (!passwordRegex.test(formData.password)) {
-        newErrors.password =
-          "Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character.";
-      }
     }
 
     setErrors(newErrors);
@@ -64,23 +49,22 @@ function Register2() {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
+        `${import.meta.env.VITE_API_URL}/auth/login`,
         formData
       );
 
-      toast.success("Account created successfully");
+      if (response) {
+        toast.success(response.data.msg);
 
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
-    } catch (error) {
-      // console.log(error.response.data);
-      if (error.response?.data?.field) {
-        setErrors((prev) => ({
-          ...prev,
-          [error.response.data.field]: error.response.data.msg,
-        }));
+        navigate("/dashboard");
+        localStorage.setItem("jwttoken", response.data.token)
+        localStorage.setItem("user", JSON.stringify(response.data.userData));
       }
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        [error.response.data.field]: error.response.data.msg,
+      }));
     } finally {
       setLoading(false);
     }
@@ -101,29 +85,28 @@ function Register2() {
           <span className="logo-mark">
             <MessageCircle size={18} strokeWidth={2.5} />
           </span>
-          <span className="logo-word">Dukan</span>
+          <span className="logo-word">Dukania</span>
         </a>
 
         <div className="auth-side__content">
           <span className="eyebrow eyebrow--onlight">
             <span className="eyebrow-dot" />
-            Join Dukania
+            Welcome back
           </span>
           <h2 className="auth-side__title">
-            Create Your Online Store in Minutes
+            Your Store. One Link. Orders on WhatsApp.
           </h2>
           <p className="auth-side__sub">
-            List your products, share one link, and start receiving orders on WhatsApp today.
+            Log in to manage your products, track orders, and keep growing your business.
           </p>
 
-          {/* small floating card, same style as the Home page hero */}
           <div className="auth-float">
             <span className="auth-float__badge">
               <MessageCircle size={12} />
             </span>
             <div>
-              <p className="auth-float__title">2,400+ shop owners</p>
-              <p className="auth-float__sub">already selling on Dukan</p>
+              <p className="auth-float__title">New order · WhatsApp</p>
+              <p className="auth-float__sub">2× Embroidered Kurti — Rs 4,900</p>
             </div>
           </div>
         </div>
@@ -140,38 +123,21 @@ function Register2() {
 
           <span className="eyebrow">
             <span className="eyebrow-dot" />
-            Register
+            Log in
           </span>
-          <h1 className="auth-title">Create Account</h1>
-          <p className="auth-sub">Set up your store and start selling on WhatsApp.</p>
+          <h1 className="auth-title">Welcome Back</h1>
+          <p className="auth-sub">Log in to keep managing your store and orders.</p>
 
           <form className="auth-form" onSubmit={handleSubmit}>
-            <div className="auth-field">
-              <label className="auth-label">Name</label>
-              <div className="auth-input-wrap">
-                <User size={16} className="auth-input-icon" />
-                <input type="text" placeholder="Your full name" className="auth-input"
-                  value={formData.name}
-                  onChange={handleChange}
-                  name="name"
-                />
-              </div>
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.name}
-                </p>
-              )}
-            </div>
-
             <div className="auth-field">
               <label className="auth-label">Email</label>
               <div className="auth-input-wrap">
                 <Mail size={16} className="auth-input-icon" />
                 <input type="email" placeholder="you@example.com" className="auth-input"
-                  value={formData.email}
-                  onChange={handleChange}
                   name="email"
-                />
+                  value={formData.email}
+                  onChange={handleChange} />
+
               </div>
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">
@@ -186,11 +152,11 @@ function Register2() {
                 <Lock size={16} className="auth-input-icon" />
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Create a password"
+                  placeholder="Enter your password"
                   className="auth-input"
+                  name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  name="password"
                 />
                 <button
                   type="button"
@@ -208,20 +174,26 @@ function Register2() {
               )}
             </div>
 
+            <div className="auth-row">
+              <a href="/forgot-password" className="auth-link">
+                Forgot Password?
+              </a>
+            </div>
+
             <button
               type="submit"
               disabled={loading}
               className="btn btn--primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? "Creating Account..." : "Create Account"}
+              {loading ? "Logging in..." : "Login"}
               <ArrowRight size={16} />
             </button>
           </form>
 
           <p className="auth-switch">
-            Already have an account?{" "}
-            <a href="/login" className="auth-link auth-link--strong">
-              Login
+            Don't have an account?{" "}
+            <a href="/register" className="auth-link auth-link--strong">
+              Register
             </a>
           </p>
         </div>
@@ -230,4 +202,4 @@ function Register2() {
   );
 }
 
-export default Register2;
+export default Login2;
