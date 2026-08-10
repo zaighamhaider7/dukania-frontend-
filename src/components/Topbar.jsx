@@ -31,7 +31,7 @@ function Topbar() {
                   className="topbar-avatar__img"
                 />
               ) : (
-                currentUser?.logo
+                currentUser?.storeName?.charAt(0).toUpperCase()
               )}
             </span>
             <span className="topbar-user-info">
