@@ -39,7 +39,7 @@ function Store() {
 
   const [store, setStore] = useState(null);
 
-  const [Products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
 
   const [notFound, setNotFound] = useState(false);
 
@@ -55,6 +55,8 @@ function Store() {
 
         setStore(response.data.store);
         setProducts(response.data.products);
+
+        console.log(response.data);
 
       } catch (error) {
         if (error.response?.status === 404) {
@@ -80,7 +82,7 @@ function Store() {
     setCartCount(cartCount + 1);
   };
 
-  const filteredProducts = Products.filter((product) =>
+  const filteredProducts = products.filter((product) =>
     product.productName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
