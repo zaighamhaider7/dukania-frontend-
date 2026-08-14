@@ -56,8 +56,6 @@ function Store() {
         setStore(response.data.store);
         setProducts(response.data.products);
 
-        console.log(response.data);
-
       } catch (error) {
         if (error.response?.status === 404) {
           setNotFound(true);
