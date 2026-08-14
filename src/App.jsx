@@ -10,6 +10,7 @@ import CreateStore from './pages/CreateStore';
 import ProtectedRoute from './components/ProtectedRoute';
 import Store from './pages/Store';
 import Notfound from './components/Notfound';
+import AddProduct from './pages/AddProduct';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path='/dashboard' element={<Dashboard />}></Route>
             <Route path='/create-store' element={<CreateStore />}></Route>
+            <Route path='/add-product' element={<AddProduct />}></Route>
           </Route>
         </Routes>
       </BrowserRouter>
