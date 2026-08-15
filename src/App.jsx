@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Store from './pages/Store';
 import Notfound from './components/Notfound';
 import AddProduct from './pages/AddProduct';
+import ProductDetails from './pages/ProductDetails';
 
 function App() {
 
@@ -23,6 +24,8 @@ function App() {
           <Route path='/404' element={<Notfound />}></Route>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/store/:storeUsername' element={<Store />}></Route>
+          <Route path="/store/:storeUsername/product/:productId" element={<ProductDetails />}
+          />
 
           <Route element={<ProtectedRoute />}>
             <Route path='/dashboard' element={<Dashboard />}></Route>
