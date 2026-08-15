@@ -66,7 +66,7 @@ function ProductDetails() {
   const [product, setProducts] = useState(null);
 
   const [store, setStore] = useState(null);
-
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   const { storeUsername, productId } = useParams();
 
@@ -78,6 +78,7 @@ function ProductDetails() {
       if (response) {
         setProducts(response.data.product)
         setStore(response.data.store)
+        setRelatedProducts(response.data.relatedProducts)
       }
     } catch (error) {
       console.log(error)
@@ -100,6 +101,10 @@ function ProductDetails() {
 
   const selectVariant = (variantName, option) => {
     setSelectedVariants({ ...selectedVariants, [variantName]: option });
+  };
+
+  const handleAddToCart = () => {
+    setCartCount(cartCount + 1);
   };
 
   return (
@@ -341,25 +346,57 @@ function ProductDetails() {
           <h2 className="pd-related__heading">You May Also Like</h2>
 
           <div className="pd-related__grid">
-            {RELATED_PRODUCTS.map((product) => (
-              <div key={product.id} className="pd-product-card">
-                <div className="pd-product-card__image-wrap">
-                  <img src={product.image} alt={product.name} />
-                </div>
-                <div className="pd-product-card__body">
-                  <p className="pd-product-card__name">{product.name}</p>
-                  <div className="pd-product-card__price-row">
-                    <span className="pd-product-card__price">
-                      Rs.{product.price.toLocaleString()}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="pd-product-card__price-original">
-                        Rs.{product.originalPrice.toLocaleString()}
-                      </span>
-                    )}
+            {relatedProducts.map((product) => (
+              // <div key={product._id} className="pd-product-card">
+              //   <div className="pd-product-card__image-wrap">
+              //     <img src={product.productImages[0]} alt={product.productName} />
+              //   </div>
+              //   <div className="pd-product-card__body">
+              //     <p className="pd-product-card__name">{product.productName}</p>
+              //     <div className="pd-product-card__price-row">
+              //       <span className="pd-product-card__price">
+              //         Rs. {(product?.discountPrice || product?.productPrice)?.toLocaleString()}
+              //       </span>
+
+              //       {product?.discountPrice && (
+              //         <span className="pd-product-card__price-original">
+              //           Rs. {product.productPrice.toLocaleString()}
+              //         </span>
+              //       )}
+              //     </div>
+              //   </div>
+              // </div>
+              <Link key={product._id}
+                to={`/store/${storeUsername}/product/${product._id}`}
+              >
+                <div className="product-card">
+                  <div className="product-card__image-wrap">
+                    <img
+                      src={product.productImages?.[0]}
+                      alt={product.productName}
+                      className="product-card__image"
+                    />
+                    <button
+                      type="button"
+                      className="product-card__quick-add"
+                      aria-label={`Add ${product.productName} to cart`}
+                      onClick={handleAddToCart}
+                    >
+                      <ShoppingBag size={16} strokeWidth={1.8} />
+                    </button>
+                  </div>
+
+                  <div className="product-card__body">
+                    {/* the product name doubles as the "view details" link */}
+                    <h5 className="product-card__name">
+                      {product.productName}
+                    </h5>
+                    <p className="product-card__price">
+                      Rs.{product.productPrice.toLocaleString()}
+                    </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
