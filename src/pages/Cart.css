@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/*
+  Almost all styling for the Cart page lives directly in Cart.jsx as Tailwind
+  utility classes, to match how the rest of the storefront is built.
+  This file only carries the one thing Tailwind can't give us: the
+  Playfair Display + Inter font pairing used across the Store page.
+*/
+
+.cart-page {
+  -webkit-font-smoothing: antialiased;
+}

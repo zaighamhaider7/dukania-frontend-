@@ -12,6 +12,7 @@ import Store from './pages/Store';
 import Notfound from './components/Notfound';
 import AddProduct from './pages/AddProduct';
 import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
 
 function App() {
 
@@ -26,6 +27,8 @@ function App() {
           <Route path='/store/:storeUsername' element={<Store />}></Route>
           <Route path="/store/:storeUsername/product/:productId" element={<ProductDetails />}
           />
+          <Route path='/store/:storeUsername/cart' element={<Cart />}></Route>
+
 
           <Route element={<ProtectedRoute />}>
             <Route path='/dashboard' element={<Dashboard />}></Route>

@@ -10,8 +10,9 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-
-
+import { useCart } from "../context/CartContext";
+import StoreHeader from "../components/StoreHeader";
+import StoreFooter from "../components/StoreFooter";
 
 function Store() {
 
@@ -19,13 +20,13 @@ function Store() {
 
   const { storeUsername } = useParams();
 
+  const { cart, addToCart, setStoreUsername } = useCart();
+
   const [store, setStore] = useState(null);
 
   const [products, setProducts] = useState([]);
 
-  const [notFound, setNotFound] = useState(false);
-
-
+  const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
     const getStore = async () => {
@@ -52,15 +53,13 @@ function Store() {
     navigate("/404");
   }
 
+  useEffect(() => {
+    setStoreUsername(storeUsername);
+  }, [storeUsername, setStoreUsername]);
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const [sortBy, setSortBy] = useState("");
-
-  const [cartCount, setCartCount] = useState(0);
-
-  const handleAddToCart = () => {
-    setCartCount(cartCount + 1);
-  };
 
   const filteredProducts = products.filter((product) =>
     product.productName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -74,47 +73,12 @@ function Store() {
 
   return (
     <div className="store-page">
-      {/* ===================== HEADER ===================== */}
-      <header className="store-header">
-        <div className="store-header__inner">
-          <div className="store-header__brand">
-            {store?.logo ? (
-              <img
-                src={store.logo}
-                alt={`${store.storeName} logo`}
-                className="store-header__logo"
-              />
-            ) : (
-              <div className="store-header__icon">
-                <StoreIcon size={22} strokeWidth={1.7} />
-              </div>
-            )}
 
-            <span className="store-header__name">
-              {store?.storeName}
-            </span>
-          </div>
+      <StoreHeader
+        store={store}
+        storeUsername={storeUsername}
+      />
 
-          <div className="store-header__actions">
-            <button type="button" className="cart-button" aria-label="View cart">
-              <ShoppingBag size={19} strokeWidth={1.7} />
-              <span className="cart-button__count">{cartCount}</span>
-            </button>
-
-            <span className="store-header__divider" />
-
-            <a
-              href={`https://wa.me/${store?.whatsappNumber.replace(/\D/g, "")}`}
-              target="_blank"
-              rel="noreferrer"
-              className="whatsapp-pill"
-            >
-              <MessageCircle size={15} className="whatsapp-pill__icon" />
-              <span>Chat on WhatsApp</span>
-            </a>
-          </div>
-        </div>
-      </header>
 
       {/* ===================== HERO ===================== */}
       <section className="store-hero">
@@ -201,7 +165,13 @@ function Store() {
                             type="button"
                             className="product-card__quick-add"
                             aria-label={`Add ${product.productName} to cart`}
-                            onClick={handleAddToCart}
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+
+                              addToCart(product,1);
+                            }}
                           >
                             <ShoppingBag size={16} strokeWidth={1.8} />
                           </button>
@@ -231,46 +201,9 @@ function Store() {
       </section>
 
       {/* ===================== FOOTER ===================== */}
-      <footer className="store-footer">
-        <div className="store-footer__inner">
-          <div className="store-footer__brand">
-            <span className="store-header__logo">
-              {store?.logo ? (
-                <img
-                  src={store.logo}
-                  alt={`${store.storeName} logo`}
-                  className="store-header__logo"
-                />
-              ) : (
-                <div className="store-header__icon">
-                  <StoreIcon size={22} strokeWidth={1.7} />
-                </div>
-              )}
-            </span>
-            <div>
-              <p className="store-footer__name">{store?.storeName}</p>
-              <p className="store-footer__desc">
-                Quality products, straight to your WhatsApp.
-              </p>
-            </div>
-          </div>
-
-          <a
-            href={`https://wa.me/${store?.whatsappNumber.replace(/\D/g, "")}`}
-            target="_blank"
-            rel="noreferrer"
-            className="whatsapp-pill"
-          >
-            <MessageCircle size={15} className="whatsapp-pill__icon" />
-            <span>Chat on WhatsApp</span>
-          </a>
-        </div>
-
-        <div className="store-footer__bottom">
-          <span>© 2026 {store?.storeName}. All rights reserved.</span>
-          <span>Powered by Dukania</span>
-        </div>
-      </footer>
+      <StoreFooter
+      store={store}
+      />
     </div>
   );
 }

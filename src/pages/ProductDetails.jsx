@@ -16,43 +16,10 @@ import {
 } from "lucide-react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import StoreHeader from "../components/StoreHeader";
+import { useCart } from "../context/CartContext";
+import StoreFooter from "../components/StoreFooter";
 
-
-// ---------------------------------------------------------------------
-// Mock data — replace with real API data later.
-// ---------------------------------------------------------------------
-const STORE = {
-  name: "Sana's Boutique",
-  whatsappNumber: "923001234567",
-};
-
-const PRODUCT = {
-  name: "Embroidered Kurti",
-  rating: 4.5,
-  reviewCount: 128,
-  price: 2450,
-  originalPrice: 2999,
-  stock: 10, // set to 0 to preview the "Out of Stock" state
-  description:
-    "A hand-embroidered kurti made from breathable lawn cotton, finished with delicate thread work along the neckline and sleeves. Comfortable for everyday wear and elegant enough for small gatherings. Pairs well with trousers or a chiffon dupatta.",
-  images: [
-    "https://picsum.photos/seed/kurti-main/800/1000",
-    "https://picsum.photos/seed/kurti-2/800/1000",
-    "https://picsum.photos/seed/kurti-3/800/1000",
-    "https://picsum.photos/seed/kurti-4/800/1000",
-  ],
-  variants: [
-    { name: "Color", options: ["Black", "White", "Blue"] },
-    { name: "Size", options: ["Small", "Medium", "Large", "XL"] },
-  ],
-};
-
-const RELATED_PRODUCTS = [
-  { id: 1, name: "Chiffon Dupatta", price: 1350, originalPrice: null, image: "https://picsum.photos/seed/dupatta/500/620" },
-  { id: 2, name: "Leather Wallet", price: 1800, originalPrice: 2200, image: "https://picsum.photos/seed/wallet/500/620" },
-  { id: 3, name: "Handmade Jewelry Set", price: 1600, originalPrice: null, image: "https://picsum.photos/seed/jewelry/500/620" },
-  { id: 4, name: "Leather Sandals", price: 2800, originalPrice: 3400, image: "https://picsum.photos/seed/sandals/500/620" },
-];
 
 const INFO_STRIP = [
   { icon: MessageCircle, title: "WhatsApp Ordering", desc: "Order directly through chat" },
@@ -69,6 +36,12 @@ function ProductDetails() {
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   const { storeUsername, productId } = useParams();
+
+  const { cart,
+    addToCart,
+    increaseQuantity,
+    decreaseQuantity, } = useCart();
+
 
   const getProductData = async () => {
     try {
@@ -90,66 +63,27 @@ function ProductDetails() {
   }, [storeUsername, productId]);
 
   const [activeImage, setActiveImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
 
   const [selectedVariants, setSelectedVariants] = useState({});
+  const [quantity, setQuantity] = useState(1);
+
 
   const inStock = product?.stocks > 0;
-
-  const decreaseQty = () => setQuantity((q) => Math.max(1, q - 1));
-  const increaseQty = () => setQuantity((q) => q + 1);
 
   const selectVariant = (variantName, option) => {
     setSelectedVariants({ ...selectedVariants, [variantName]: option });
   };
 
-  const handleAddToCart = () => {
-    setCartCount(cartCount + 1);
-  };
+  const cartItem = cart.find(
+    (item) => item.productId === productId
+  );
 
   return (
     <div className="pd-page">
-      {/* ===================== HEADER (same style as the Store page) ===================== */}
-      <header className="pd-header">
-        <div className="pd-header__inner">
-          <div className="pd-header__brand">
-            <span className="pd-header__logo">
-              {store?.logo ? (
-                <img
-                  src={store.logo}
-                  alt={`${store.storeName} logo`}
-                  className="store-header__logo"
-                />
-              ) : (
-                <div className="store-header__icon">
-                  <StoreIcon size={22} strokeWidth={1.7} />
-                </div>
-              )}
-            </span>
-            <span className="pd-header__name">{store?.storeName}</span>
-          </div>
-
-          <div className="pd-header__actions">
-            <button type="button" className="pd-cart-button" aria-label="View cart">
-              <ShoppingBag size={19} strokeWidth={1.7} />
-              <span className="pd-cart-button__count">0</span>
-            </button>
-
-            <span className="pd-header__divider" />
-
-            <a
-              href={`https://wa.me/${store?.whatsappNumber.replace(/\D/g, "")}`}
-              target="_blank"
-              rel="noreferrer"
-              className="pd-whatsapp-pill"
-            >
-              <MessageCircle size={15} className="pd-whatsapp-pill__icon" />
-              <span>Chat on WhatsApp</span>
-            </a>
-          </div>
-        </div>
-      </header>
-
+      <StoreHeader
+        store={store}
+        storeUsername={storeUsername}
+      />
       {/* ===================== BREADCRUMB ===================== */}
       <div className="pd-breadcrumb">
         <div className="pd-breadcrumb__inner">
@@ -188,29 +122,6 @@ function ProductDetails() {
           <div className="pd-info">
             <h1 className="pd-info__name">{product?.productName}</h1>
 
-            {/* <div className="pd-rating">
-              <div className="pd-rating__stars">
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <Star
-                    key={n}
-                    size={15}
-                    fill={n <= Math.round(PRODUCT.rating) ? "currentColor" : "none"}
-                  />
-                ))}
-              </div>
-              <span className="pd-rating__value">{PRODUCT.rating}</span>
-              <span className="pd-rating__count">({PRODUCT.reviewCount} reviews)</span>
-            </div> */}
-
-            {/* <div className="pd-price-row">
-              <span className="pd-price">Rs. {product?.productPrice.toLocaleString()}</span>
-              {product?.discountPrice && (
-                <span className="pd-price__original">
-                  Rs. {product?.discountPrice.toLocaleString()}
-                </span>
-              )}
-
-            </div> */}
             <div className="pd-price-row">
               <span className="pd-price">
                 Rs. {(product?.discountPrice || product?.productPrice)?.toLocaleString()}
@@ -268,7 +179,12 @@ function ProductDetails() {
                 <button
                   type="button"
                   className="pd-qty__btn"
-                  onClick={decreaseQty}
+                  disabled={quantity === 1}
+                  onClick={() => {
+                    if (quantity > 1) {
+                      setQuantity(quantity - 1);
+                    }
+                  }}
                   aria-label="Decrease quantity"
                 >
                   <Minus size={14} />
@@ -277,7 +193,7 @@ function ProductDetails() {
                 <button
                   type="button"
                   className="pd-qty__btn"
-                  onClick={increaseQty}
+                  onClick={() => setQuantity(quantity + 1)}
                   aria-label="Increase quantity"
                 >
                   <Plus size={14} />
@@ -291,7 +207,7 @@ function ProductDetails() {
                 <MessageCircle size={18} />
                 Order on WhatsApp
               </button>
-              <button type="button" className="pd-btn-secondary" disabled={!inStock}>
+              <button type="button" className="pd-btn-secondary" disabled={!inStock} onClick={() => addToCart(product, quantity)}>
                 <ShoppingBag size={17} />
                 Add to Cart
               </button>
@@ -347,25 +263,6 @@ function ProductDetails() {
 
           <div className="pd-related__grid">
             {relatedProducts.map((product) => (
-              // <div key={product._id} className="pd-product-card">
-              //   <div className="pd-product-card__image-wrap">
-              //     <img src={product.productImages[0]} alt={product.productName} />
-              //   </div>
-              //   <div className="pd-product-card__body">
-              //     <p className="pd-product-card__name">{product.productName}</p>
-              //     <div className="pd-product-card__price-row">
-              //       <span className="pd-product-card__price">
-              //         Rs. {(product?.discountPrice || product?.productPrice)?.toLocaleString()}
-              //       </span>
-
-              //       {product?.discountPrice && (
-              //         <span className="pd-product-card__price-original">
-              //           Rs. {product.productPrice.toLocaleString()}
-              //         </span>
-              //       )}
-              //     </div>
-              //   </div>
-              // </div>
               <Link key={product._id}
                 to={`/store/${storeUsername}/product/${product._id}`}
               >
@@ -380,14 +277,18 @@ function ProductDetails() {
                       type="button"
                       className="product-card__quick-add"
                       aria-label={`Add ${product.productName} to cart`}
-                      onClick={handleAddToCart}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        addToCart(product, 1);
+                      }}
                     >
                       <ShoppingBag size={16} strokeWidth={1.8} />
                     </button>
                   </div>
 
                   <div className="product-card__body">
-                    {/* the product name doubles as the "view details" link */}
                     <h5 className="product-card__name">
                       {product.productName}
                     </h5>
@@ -402,45 +303,9 @@ function ProductDetails() {
         </div>
       </section>
 
-      {/* ===================== FOOTER (same style as the Store page) ===================== */}
-      <footer className="pd-footer">
-        <div className="pd-footer__inner">
-          <div className="pd-footer__brand">
-            <span className="pd-header__logo">
-              {store?.logo ? (
-                <img
-                  src={store.logo}
-                  alt={`${store.storeName} logo`}
-                  className="store-header__logo"
-                />
-              ) : (
-                <div className="store-header__icon">
-                  <StoreIcon size={22} strokeWidth={1.7} />
-                </div>
-              )}
-            </span>
-            <div>
-              <p className="pd-footer__name">{store?.storeName}</p>
-              <p className="pd-footer__desc">Quality products, straight to your WhatsApp.</p>
-            </div>
-          </div>
-
-          <a
-            href={`https://wa.me/${store?.whatsappNumber.replace(/\D/g, "")}`}
-            target="_blank"
-            rel="noreferrer"
-            className="pd-whatsapp-pill"
-          >
-            <MessageCircle size={15} className="pd-whatsapp-pill__icon" />
-            <span>Chat on WhatsApp</span>
-          </a>
-        </div>
-
-        <div className="pd-footer__bottom">
-          <span>© 2026 {STORE.name}. All rights reserved.</span>
-          <span>Powered by Dukania</span>
-        </div>
-      </footer>
+      <StoreFooter
+        store={store}
+      />
     </div>
   );
 }
