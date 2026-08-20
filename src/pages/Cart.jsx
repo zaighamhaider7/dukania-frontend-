@@ -42,10 +42,16 @@ function Cart() {
 
   const {
     cart,
+    setStoreUsername,
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
   } = useCart();
+
+  useEffect(() => {
+    setStoreUsername(storeUsername);
+  }, [storeUsername, setStoreUsername]);
+
 
   // purely for display — not real cart logic, just rendering totals for the static list above
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
