@@ -1,5 +1,5 @@
 import "./Cart.css";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -55,9 +55,9 @@ function Cart() {
 
   // purely for display — not real cart logic, just rendering totals for the static list above
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const discount = Math.round(subtotal * 0.2);
-  const deliveryFee = 0;
-  const total = subtotal - discount + deliveryFee;
+  // const discount = Math.round(subtotal * 0.2);
+  const deliveryFee = 200;
+  const total = subtotal + deliveryFee;
   const isEmpty = cart.length === 0;
 
   return (
@@ -80,21 +80,20 @@ function Cart() {
           <p className="text-[#716B63] text-sm mb-8">
             Looks like you haven't added anything yet.
           </p>
-          <a
-            href="#"
+          <Link to={`/store/${storeUsername}`}
             className="inline-flex items-center gap-2 bg-[#1E1C1A] text-[#FAF8F4] font-semibold text-sm px-7 py-3.5 rounded-md hover:bg-black hover:-translate-y-0.5 transition-all"
           >
             Continue Shopping
             <ArrowRight size={15} />
-          </a>
+          </Link>
         </section>
       ) : (
         <section className="max-w-[1180px] mx-auto px-6 py-10">
           {/* ---------- breadcrumb ---------- */}
           <div className="flex items-center gap-1.5 text-[13px] text-[#716B63] mb-4">
-            <a href="#" className="hover:text-[#1E1C1A] transition-colors">
-              Home
-            </a>
+            <Link to={`/store/${storeUsername}`} className="hover:text-[#1E1C1A] transition-colors">
+              {store?.storeName}
+            </Link>
             <ChevronRight size={13} />
             <span className="text-[#1E1C1A] font-medium">Cart</span>
           </div>
@@ -198,12 +197,12 @@ function Cart() {
                     Rs. {subtotal.toLocaleString()}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-[#716B63]">
+                {/* <div className="flex items-center justify-between text-[#716B63]">
                   <span>Discount (-20%)</span>
                   <span className="text-[#C0524A] font-medium">
                     -Rs. {discount.toLocaleString()}
                   </span>
-                </div>
+                </div> */}
                 <div className="flex items-center justify-between text-[#716B63]">
                   <span>Delivery Fee</span>
                   <span className="text-[#1E1C1A] font-medium">
@@ -221,20 +220,6 @@ function Cart() {
                 </span>
               </div>
 
-              {/* coupon row */}
-              <div className="flex items-center gap-2 mb-4">
-                <input
-                  type="text"
-                  placeholder="Enter promo code"
-                  className="flex-1 min-w-0 border border-[#E6E1D8] rounded-md px-3 py-2.5 text-sm bg-[#FAF8F4] placeholder:text-[#A39C92] focus:outline-none focus:border-[#1E1C1A] transition-colors"
-                />
-                <button
-                  type="button"
-                  className="shrink-0 px-4 py-2.5 rounded-md bg-[#1E1C1A] text-[#FAF8F4] text-sm font-semibold hover:bg-black transition-colors"
-                >
-                  Apply
-                </button>
-              </div>
 
               {/* checkout — full-width dark primary button */}
               <button
