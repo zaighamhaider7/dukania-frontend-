@@ -39,8 +39,15 @@ function ProductDetails() {
 
   const { cart,
     addToCart,
+    setStoreUsername,
+
     increaseQuantity,
     decreaseQuantity, } = useCart();
+
+  useEffect(() => {
+    setStoreUsername(storeUsername);
+  }, [storeUsername, setStoreUsername]);
+
 
 
   const getProductData = async () => {
