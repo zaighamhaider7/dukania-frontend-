@@ -53,11 +53,9 @@ function Cart() {
   }, [storeUsername, setStoreUsername]);
 
 
-  // purely for display — not real cart logic, just rendering totals for the static list above
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  // const discount = Math.round(subtotal * 0.2);
-  const deliveryFee = 200;
-  const total = subtotal + deliveryFee;
+  // const deliveryFee = 200;
+  const total = subtotal;
   const isEmpty = cart.length === 0;
 
   return (
@@ -197,18 +195,13 @@ function Cart() {
                     Rs. {subtotal.toLocaleString()}
                   </span>
                 </div>
+
                 {/* <div className="flex items-center justify-between text-[#716B63]">
-                  <span>Discount (-20%)</span>
-                  <span className="text-[#C0524A] font-medium">
-                    -Rs. {discount.toLocaleString()}
-                  </span>
-                </div> */}
-                <div className="flex items-center justify-between text-[#716B63]">
                   <span>Delivery Fee</span>
                   <span className="text-[#1E1C1A] font-medium">
                     Rs. {deliveryFee.toLocaleString()}
                   </span>
-                </div>
+                </div> */}
               </div>
 
               <div className="border-t border-[#E6E1D8] my-5" />
@@ -222,13 +215,12 @@ function Cart() {
 
 
               {/* checkout — full-width dark primary button */}
-              <button
-                type="button"
+              <Link to={`/store/${storeUsername}/checkout`}
                 className="w-full inline-flex items-center justify-center gap-2 bg-[#1E1C1A] text-[#FAF8F4] font-semibold text-sm py-3.5 rounded-md hover:bg-black hover:-translate-y-0.5 transition-all"
               >
                 Go to Checkout
                 <ArrowRight size={15} />
-              </button>
+              </Link>
             </aside>
           </div>
         </section>

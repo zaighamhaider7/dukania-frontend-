@@ -13,6 +13,7 @@ import Notfound from './components/Notfound';
 import AddProduct from './pages/AddProduct';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/store/:storeUsername/product/:productId" element={<ProductDetails />}
           />
           <Route path='/store/:storeUsername/cart' element={<Cart />}></Route>
+          <Route path='/store/:storeUsername/checkout' element={<Checkout />}></Route>
 
 
           <Route element={<ProtectedRoute />}>

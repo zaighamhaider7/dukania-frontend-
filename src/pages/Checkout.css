@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/*
+  Most of the Checkout page is styled with Tailwind utility classes directly
+  in Checkout.jsx, to match how the Store/Product/Cart pages are built.
+  This file only holds the font import and the one repeated input style,
+  since every field in the form shares the same look.
+*/
+
+.checkout-page {
+  -webkit-font-smoothing: antialiased;
+}
+
+.checkout-input {
+  width: 100%;
+  background: #faf8f4;
+  border: 1px solid #e6e1d8;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 0.88rem;
+  color: #1e1c1a;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.checkout-input::placeholder {
+  color: #a39c92;
+}
+
+.checkout-input:focus {
+  outline: none;
+  border-color: #1e1c1a;
+  box-shadow: 0 0 0 3px rgba(30, 28, 26, 0.08);
+  background: #ffffff;
+}
