@@ -15,6 +15,7 @@ import {
   Check,
   ChevronDown,
 } from "lucide-react";
+import { toast } from "react-toastify";
 
 function Checkout() {
 
@@ -41,6 +42,7 @@ function Checkout() {
 
   const {
     cart,
+    setCart,
     setStoreUsername,
   } = useCart();
 
@@ -49,8 +51,6 @@ function Checkout() {
   }, [storeUsername, setStoreUsername]);
 
   const [orderData, setOrderData] = useState({
-    storeId: "",
-
     customer: {
       name: "",
       whatsappNumber: "",
@@ -62,12 +62,6 @@ function Checkout() {
       city: "",
       note: "",
     },
-
-    items: [],
-
-    totalAmount: "",
-
-    status: "pending",
   });
 
   const handleCustomerChange = (e) => {
@@ -94,27 +88,72 @@ function Checkout() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Order Data:", orderData);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/product/orders`,
+        {
+          storeId: store._id,
+
+          customer: orderData.customer,
+
+          delivery: orderData.delivery,
+
+          items: cart.map((item) => ({
+            productId: item.productId,
+            quantity: item.quantity,
+          })),
+        }
+      );
+
+      toast.success(response.data.msg);
+      
+      // Order successfully saved
+      const order = response.data.order;
+
+      const message = `
+        New Order
+
+        Order ID: ${order._id}
+
+        Customer Details:
+        Name: ${order.customer.name}
+        WhatsApp: ${order.customer.whatsappNumber}
+        Email: ${order.customer.email || "N/A"}
+
+        Delivery Details:
+        Address: ${order.delivery.address}
+        City: ${order.delivery.city}
+        Note: ${order.delivery.note || "N/A"}
+
+        Products:
+        ${order.items
+                  .map(
+                    (item) =>
+                      `${item.productName}
+        Rs. ${item.price} × ${item.quantity} = Rs. ${item.total}`
+                  )
+                  .join("\n\n")}
+
+        Total Amount: Rs. ${order.totalAmount}
+        `;
+
+      const whatsappNumber = store.whatsappNumber.replace(/\D/g, "");
+
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+        message
+      )}`;
+
+      window.open(whatsappUrl, "_blank");
+
+      setCart([]);
+
+    } catch (error) {
+      toast.error(error.response?.data || error);
+    }
   };
-
-  useEffect(() => {
-    if (!store) return;
-
-    setOrderData((prev) => ({
-      ...prev,
-      storeId: store._id,
-      items: cart.map((item) => ({
-        productId: item.productId,
-        productName: item.productName,
-        price: item.price,
-        quantity: item.quantity,
-        total: subtotal
-      })),
-    }));
-  }, [store, cart]);
 
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -254,7 +293,7 @@ function Checkout() {
                       rows={3}
                       className="checkout-input resize-y"
                       name="note"
-                      value={orderData.delivery.bote}
+                      value={orderData.delivery.note}
                       onChange={handleDeliveryChange}
                     ></textarea>
                   </div>
